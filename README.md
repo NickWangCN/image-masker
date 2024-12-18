@@ -1,7 +1,7 @@
 # Image Masker
 
 ![GitHub](https://img.shields.io/github/license/NickWangCN/image-masker)
-![npm](https://www.npmjs.com/package/@nick_cn/image-masker)
+![npm](https://img.shields.io/npm/v/@nick_cn/image-masker)
 ![GitHub last commit](https://img.shields.io/github/last-commit/NickWangCN/image-masker)
 
 一个用于图片遮罩的工具组件。支持自由绘制、矩形、椭圆等多种遮罩方式，并提供撤销、重做等功能。
