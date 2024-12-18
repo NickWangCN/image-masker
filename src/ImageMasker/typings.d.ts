@@ -1,4 +1,4 @@
-declare namespace ImageMaskerTypes {
+declare module ImageMaskerTypes {
   // 绘制参数
   interface InitParams {
     // 父元素
@@ -45,5 +45,3 @@ declare namespace ImageMaskerTypes {
     toDataURL: () => Promise<string>;
   }
 }
-
-export = ImageMaskerTypes;

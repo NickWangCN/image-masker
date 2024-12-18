@@ -1,5 +1,5 @@
 {
-  "name": "@nickw_cn/image-masker",
+  "name": "@nick_cn/image-masker",
   "version": "1.0.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -9,20 +9,26 @@
   ],
   "scripts": {
     "start": "parcel src/index.html --open",
-    "build": "parcel build src/index.html"
+    "build:demo": "parcel build src/index.html",
+    "build:lib": "rollup -c",
+    "prepublishOnly": "npm run build:lib"
   },
   "keywords": [
     "image",
     "mask",
     "canvas"
   ],
-  "author": "nickw_cn<nickw_cn@163.com>",
+  "author": "nick_cn<nickw_cn@163.com>",
   "license": "MIT",
   "description": "A tool for masking images",
-  "dependencies": {},
+  "dependencies": {
+    "parcel": "^2.13.3"
+  },
   "devDependencies": {
     "@parcel/transformer-typescript-tsc": "^2.13.3",
-    "parcel": "^2.13.3",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "rollup": "^2.70.0",
+    "tslib": "^2.6.2",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {},

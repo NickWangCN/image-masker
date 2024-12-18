@@ -1,4 +1,3 @@
-import type ImageMaskerTypes from "./typings";
 /**
  * 图形标注工具器
  *
@@ -318,7 +317,7 @@ async function initializeImageMasker(
     return { width: contentWidth, height: contentHeight };
   }
 
-  /** 如果parentElement是dom，则直接使用，否则使用id查找dom */
+  /** 如果parentElement是dom，则直��使用，否则使用id查找dom */
   const parentElement =
     options.parentElement instanceof HTMLElement
       ? options.parentElement

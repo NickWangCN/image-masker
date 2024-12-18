@@ -8,8 +8,8 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "declaration": true,
-    "declarationDir": "dist",
     "outDir": "dist",
+    "declarationDir": "dist",
     "lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost"]
   },
   "include": ["src/ImageMasker/**/*"],

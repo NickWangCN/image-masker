@@ -1,5 +1,4 @@
 import ImageMasker from "./ImageMasker/index";
-import type ImageMaskerTypes from "./ImageMasker/typings";
 
 let masker: ImageMaskerTypes.Instance | undefined;
 
