@@ -1,8 +1,8 @@
 # Image Masker
 
-![GitHub](https://img.shields.io/github/license/你的用户名/image-masker)
+![GitHub](https://img.shields.io/github/license/NickWangCN/image-masker)
 ![npm](https://img.shields.io/npm/v/@nickw_cn/image-masker)
-![GitHub last commit](https://img.shields.io/github/last-commit/你的用户名/image-masker)
+![GitHub last commit](https://img.shields.io/github/last-commit/NickWangCN/image-masker)
 
 一个用于图片遮罩的工具组件。支持自由绘制、矩形、椭圆等多种遮罩方式，并提供撤销、重做等功能。
 
@@ -57,7 +57,7 @@ ImageMasker(options).then((masker) => {
 
 | 参数          | 类型             | 必填 | 描述                       |
 | ------------- | ---------------- | ---- | -------------------------- |
-| parentElement | string           | ���  | 容器元素的 ID              |
+| parentElement | string           | 是   | 容器元素的 ID              |
 | image         | HTMLImageElement | 是   | 要处理的图片实例           |
 | padding       | string           | 否   | 容器内边距，默认为'4px'    |
 | background    | string           | 否   | 容器背景颜色，默认为'#000' |
