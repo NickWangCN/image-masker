@@ -9,28 +9,34 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "18"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install Dependencies
         run: |
+          node --version
+          npm --version
           npm install
-          npm list # 列出安装的依赖
 
       - name: Build Demo
         run: |
           npm run build:demo
-          ls -la dist # 检查构建输出
-          cat dist/index.html # 检查构建的HTML内容
+          ls -la dist
+          cat dist/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          force_orphan: true # 强制创建新的gh-pages分支
-          enable_jekyll: false # 禁用Jekyll处理
+          force_orphan: true
+          enable_jekyll: false
