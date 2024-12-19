@@ -9,9 +9,8 @@
   ],
   "scripts": {
     "start": "parcel src/example/index.html --open",
-    "build:lib": "rollup -c",
-    "build:demo": "parcel build src/example/index.html --public-url ./",
-    "prepublishOnly": "npm run build:lib"
+    "build:demo": "parcel build src/example/index.html --public-url ./ --dist-dir dist",
+    "build:lib": "rollup -c"
   },
   "keywords": [
     "image",

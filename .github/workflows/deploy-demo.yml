@@ -17,13 +17,20 @@ jobs:
           node-version: "16"
 
       - name: Install Dependencies
-        run: npm ci
+        run: |
+          npm install
+          npm list # 列出安装的依赖
 
       - name: Build Demo
-        run: npm run build:demo
+        run: |
+          npm run build:demo
+          ls -la dist # 检查构建输出
+          cat dist/index.html # 检查构建的HTML内容
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          force_orphan: true # 强制创建新的gh-pages分支
+          enable_jekyll: false # 禁用Jekyll处理
