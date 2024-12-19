@@ -3,10 +3,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "production",
-  entry: "./src/index.ts",
+  entry: {
+    index: "./src/index.ts",
+    "example/main": "./src/example/main.ts",
+  },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "index.js",
+    filename: "[name].js",
     library: {
       name: "ImageMasker",
       type: "umd",
