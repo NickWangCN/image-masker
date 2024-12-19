@@ -1,3 +1,4 @@
+import { ImageMaskerTypes } from "./typings";
 /**
  * 图形标注工具器
  *

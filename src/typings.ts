@@ -1,6 +1,6 @@
-declare module ImageMaskerTypes {
+export namespace ImageMaskerTypes {
   // 绘制参数
-  interface InitParams {
+  export interface InitParams {
     // 父元素
     parentElement: string | HTMLElement;
     // 背景图片
@@ -12,7 +12,7 @@ declare module ImageMaskerTypes {
   }
 
   // 绘制设置
-  interface Instance {
+  export interface Instance {
     // 绘画模式：涂抹(draw)、橡皮擦(erase)
     mode: "draw" | "erase";
     // 形状：自由(free)、矩形(rect)、椭圆(oval)

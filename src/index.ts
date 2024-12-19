@@ -1,3 +1,5 @@
+import { ImageMaskerTypes } from "./typings";
+
 /**
  * 图形标注工具器
  *
@@ -283,7 +285,7 @@ async function initializeImageMasker(
     container.addEventListener("mouseup", canvasDocumentMouseUp);
   }
   /** 创建一个canvas并绘制图片，可以指定最大高度或宽度*/
-  async function getCanvasImage(
+  function getCanvasImage(
     container: HTMLDivElement,
     img: HTMLImageElement,
     maxWidth: number,
@@ -331,7 +333,7 @@ async function initializeImageMasker(
     return { width: contentWidth, height: contentHeight };
   }
 
-  /** 如果parentElement是dom，则直��使用，否则使用id查找dom */
+  /** 如果parentElement是dom，则直接使用，否则使用id查找dom */
   const parentElement =
     options.parentElement instanceof HTMLElement
       ? options.parentElement
@@ -353,16 +355,13 @@ async function initializeImageMasker(
   container.style.flex = "1";
   parentElement.appendChild(container);
   const { width, height } = getContentSize(container);
+
   /** 创建Promise对象 */
   return new Promise((resolve) => {
+    const tempImage = new Image();
     /** 计算图片大小，按画布大小等比例缩放，并计算居中显示时左上角的位置 */
-    options.image.onload = async function () {
-      const result = await getCanvasImage(
-        container,
-        options.image,
-        width,
-        height
-      );
+    tempImage.onload = function () {
+      const result = getCanvasImage(container, options.image, width, height);
       settings.canvas = result.canvas; // 将canvas赋值给外部变量
       settings.ctx = result.ctx!; // 将ctx赋值给外部变量
       settings.width = result.width; // 将宽度赋值给外部变量
@@ -378,6 +377,7 @@ async function initializeImageMasker(
       undoStack.push(settings.imageData);
       resolve(settings);
     };
+    tempImage.src = options.image.src;
   });
 }
 
