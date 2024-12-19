@@ -1,6 +1,6 @@
 {
   "name": "@nick_cn/image-masker",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -8,8 +8,8 @@
     "dist"
   ],
   "scripts": {
-    "start": "parcel src/index.html --open",
-    "build:demo": "parcel build src/index.html",
+    "start": "parcel src/example/index.html --open",
+    "build:demo": "parcel build src/example/index.html",
     "build:lib": "rollup -c",
     "prepublishOnly": "npm run build:lib"
   },

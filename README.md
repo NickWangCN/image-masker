@@ -9,46 +9,7 @@
 ## 安装
 
 ```bash
-npm install @nickw_cn/image-masker
-```
-
-## 功能特点
-
-- 🎨 多种遮罩模式：涂抹和擦除
-- ✏️ 多种绘制形状：自由绘制、矩形、椭圆
-- ↩️ 支持撤销/重做操作
-- 🖼️ 支持预览结果
-- 📱 响应式设计，支持移动端
-
-## 使用方法
-
-```ts
-import ImageMasker from "@nickw_cn/image-masker";
-
-// 创建图片实例
-const image = new Image();
-image.src = "your-image-url";
-// 配置选项
-const options = {
-  parentElement: "container-id", // 容器元素的ID
-  image, // 图片实例
-  padding: "4px", // 内边距
-};
-// 初始化遮罩器
-ImageMasker(options).then((masker) => {
-  // 设置绘制模式
-  masker.mode = "draw"; // 'draw' | 'erase'
-  // 设置绘制形状
-  masker.shape = "free"; // 'free' | 'rect' | 'oval'
-  // 撤销操作
-  masker.undo();
-  // 重做操作
-  masker.redo();
-  // 获取处理后的图片
-  masker.toDataURL().then((dataUrl) => {
-    console.log(dataUrl);
-  });
-});
+npm install @nick_cn/image-masker
 ```
 
 ## API
@@ -78,6 +39,10 @@ ImageMasker(options).then((masker) => {
 | undo()      | void                  | 撤销上一步操作           |
 | redo()      | void                  | 重做上一步操作           |
 | toDataURL() | Promise&lt;string&gt; | 获取处理后的图片数据 URL |
+
+## 示例
+
+完整的示例代码可以在 [GitHub](https://github.com/NickWangCN/image-masker/tree/main/src/example) 查看。
 
 ## 浏览器支持
 

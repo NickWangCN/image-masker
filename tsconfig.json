@@ -12,6 +12,6 @@
     "declarationDir": "dist",
     "lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost"]
   },
-  "include": ["src/ImageMasker/**/*"],
+  "include": ["src/ImageMasker/**/*", "src/index.ts", "src/typings.d.ts"],
   "exclude": ["node_modules"]
 }
