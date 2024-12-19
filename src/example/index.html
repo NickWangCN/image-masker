@@ -59,9 +59,7 @@
 
       handleAction = async function (action) {
         if (masker) {
-          if (action !== "preview") {
-            masker[action]();
-          } else {
+          if (action === "preview") {
             const dataURL = await masker.toDataURL();
             const preview = document.getElementById("masker-preview");
             if (preview) {
@@ -70,12 +68,22 @@
               img.src = dataURL;
               preview.appendChild(img);
             }
+          } else if (action === "maskOnly") {
+            const dataURL = await masker.maskLayerToDataURL();
+            const preview = document.getElementById("masker-preview");
+            if (preview) {
+              preview.innerHTML = "";
+              const img = new Image();
+              img.src = dataURL;
+              preview.appendChild(img);
+            }
+          } else {
+            masker[action]();
           }
         }
       };
 
       document.addEventListener("DOMContentLoaded", () => {
-        console.log("DOMContentLoaded");
         const imageInput = document.getElementById("imageInput");
         const uploadArea = document.querySelector(".upload-area");
         const actionsBox = document.getElementById("masker-actions-box");
@@ -189,6 +197,7 @@
         <button onclick="handleAction('undo')">撤销</button>
         <button onclick="handleAction('redo')">重做</button>
         <button onclick="handleAction('preview')">预览</button>
+        <button onclick="handleAction('maskOnly')">导出遮罩</button>
       </div>
       <div id="masker" style="width: 800px; height: 300px"></div>
       <div id="masker-preview" style="width: 800px; height: 300px"></div>

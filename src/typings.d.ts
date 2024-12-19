@@ -41,6 +41,8 @@ declare module ImageMaskerTypes {
     undo: () => void;
     // 重做
     redo: () => void;
+    // 导出遮罩层
+    maskLayerToDataURL: () => Promise<string>;
     // 导出图片
     toDataURL: () => Promise<string>;
   }

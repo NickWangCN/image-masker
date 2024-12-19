@@ -12,6 +12,12 @@
 npm install @nick_cn/image-masker
 ```
 
+## 示例
+
+👉 [在线体验 Demo](https://nickwangcn.github.io/image-masker)
+
+完整的示例代码可以在 [GitHub](https://github.com/NickWangCN/image-masker/tree/main/src/example) 查看。
+
 ## API
 
 ### 初始化选项
@@ -34,15 +40,12 @@ npm install @nick_cn/image-masker
 
 ### 实例方法
 
-| 方法        | 返回值                | 描述                     |
-| ----------- | --------------------- | ------------------------ |
-| undo()      | void                  | 撤销上一步操作           |
-| redo()      | void                  | 重做上一步操作           |
-| toDataURL() | Promise&lt;string&gt; | 获取处理后的图片数据 URL |
-
-## 示例
-
-完整的示例代码可以在 [GitHub](https://github.com/NickWangCN/image-masker/tree/main/src/example) 查看。
+| 方法                 | 返回值                | 描述                     |
+| -------------------- | --------------------- | ------------------------ |
+| undo()               | void                  | 撤销上一步操作           |
+| redo()               | void                  | 重做上一步操作           |
+| maskLayerToDataURL() | Promise&lt;string&gt; | 获取遮罩层的图片数据 URL |
+| toDataURL()          | Promise&lt;string&gt; | 获取处理后的图片数据 URL |
 
 ## 浏览器支持
 
