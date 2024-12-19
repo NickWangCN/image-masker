@@ -14,7 +14,7 @@ npm install @nick_cn/image-masker
 
 ## 示例
 
-👉 [在线体验 Demo](https://nickwangcn.github.io/image-masker)
+👉 [在线体验 Demo](https://nickwangcn.github.io/image-masker/dist/index.html)
 
 完整的示例代码可以在 [GitHub](https://github.com/NickWangCN/image-masker/tree/main/src/example) 查看。
 
