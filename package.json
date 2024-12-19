@@ -9,7 +9,6 @@
   ],
   "scripts": {
     "start": "parcel src/example/index.html --open",
-    "build:demo": "parcel build src/example/index.html --public-url ./ --dist-dir dist",
     "build:lib": "rollup -c"
   },
   "keywords": [

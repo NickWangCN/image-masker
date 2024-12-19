@@ -57,6 +57,7 @@ function initializeImageMasker(options) {
             redoAble: false,
             undo,
             redo,
+            maskLayerToDataURL,
             toDataURL,
         };
         const undoStack = []; // 撤销栈
@@ -140,6 +141,21 @@ function initializeImageMasker(options) {
             }
         };
         /**
+         * 获取当前遮罩内容
+         */
+        function maskLayerToDataURL() {
+            return __awaiter(this, void 0, void 0, function* () {
+                const promise = new Promise((resolve, reject) => {
+                    if (!settings.canvas || !settings.ctx) {
+                        reject(new Error("Canvas or ctx is not defined"));
+                        return;
+                    }
+                    resolve(settings.canvas.toDataURL());
+                });
+                return promise;
+            });
+        }
+        /**
          * 获取当前画布内容
          * 首先保存canvas状态，读取当前画布内容。
          * 然后先绘制原始图片，再绘制刚才读取的画布内容
@@ -152,8 +168,6 @@ function initializeImageMasker(options) {
                         reject(new Error("Canvas or ctx or originalImage is not defined"));
                         return;
                     }
-                    // 保存canvas状态
-                    settings.ctx.save();
                     // 读取当前画布内容
                     const imageData = settings.canvas.toDataURL();
                     const tmpImage = new Image();
@@ -165,7 +179,8 @@ function initializeImageMasker(options) {
                         // 读取当前画布内容
                         const result = settings.canvas.toDataURL();
                         // 恢复canvas状态
-                        settings.ctx.restore();
+                        settings.ctx.clearRect(0, 0, settings.width, settings.height);
+                        settings.ctx.drawImage(tmpImage, 0, 0);
                         resolve(result);
                     };
                     tmpImage.src = imageData;
