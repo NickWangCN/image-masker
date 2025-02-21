@@ -6,6 +6,7 @@ export declare namespace ImageMaskerTypes {
         background?: string;
     }
     interface Instance {
+        enableDraw: boolean;
         mode: "draw" | "erase";
         shape: "free" | "rect" | "oval";
         brushSize: number;
@@ -20,6 +21,7 @@ export declare namespace ImageMaskerTypes {
         redoAble: boolean;
         undo: () => void;
         redo: () => void;
+        clear: () => void;
         maskLayerToDataURL: () => Promise<string>;
         toDataURL: () => Promise<string>;
     }

@@ -4,7 +4,7 @@
         font-family: Arial, sans-serif;
       }
       .container {
-        max-width: 800px;
+        max-width: 960px;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
@@ -33,4 +33,4 @@
         padding: 4px;
         border-radius: 4px;
         border: 1px solid #ccc;
-      }</style><script defer="defer" src="../index.js"></script><script defer="defer" src="../example/main.js"></script></head><body><div class="container"><div class="upload-area"><input type="file" id="imageInput" accept="image/*"/><p>请选择或拖拽图片到这里</p></div><div id="masker-actions-box"><label>Size: <input type="number" min="1" max="50" value="5" id="brushSize"/></label> <label>Mode: <select id="mode"><option value="draw">涂抹</option><option value="erase">清除</option></select></label> <label>Shape: <select id="shape"><option value="free">自由</option><option value="rect">矩形</option><option value="oval">椭圆</option></select></label> <button id="undo">撤销</button> <button id="redo">重做</button> <button id="preview">预览</button> <button id="maskOnly">导出遮罩</button></div><div id="masker" style="width: 800px; height: 300px"></div><div id="masker-preview" style="width: 800px; height: 300px"></div></div></body></html>
+      }</style><script defer="defer" src="../index.js"></script><script defer="defer" src="../example/main.js"></script></head><body><div class="container"><div class="upload-area"><input type="file" id="imageInput" accept="image/*"/><p>请选择或拖拽图片到这里</p></div><div id="masker-actions-box"><label>尺寸: <input type="number" min="1" max="50" value="5" id="brushSize"/></label> <label>模式: <select id="mode"><option value="draw">涂抹</option><option value="erase">清除</option></select></label> <label>形状: <select id="shape"><option value="free">自由</option><option value="rect">矩形</option><option value="oval">椭圆</option></select></label> <label><input id="enableDraw" type="checkbox" checked="checked"/> 启用绘画</label> <button id="clear">清空</button> <button id="undo">撤销</button> <button id="redo">重做</button> <button id="preview">预览</button> <button id="maskOnly">导出遮罩</button></div><div id="masker" style="width: 960px; height: 300px"></div><div id="masker-preview" style="width: 960px; height: 300px"></div></div></body></html>
