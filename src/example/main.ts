@@ -34,6 +34,20 @@ document.addEventListener("DOMContentLoaded", () => {
     masker?.redo();
   });
 
+  document.getElementById("clear")?.addEventListener("click", () => {
+    masker?.clear();
+  });
+
+  document.getElementById("enableDraw")?.addEventListener("change", (e) => {
+    if (masker) {
+      if ((e.target as HTMLInputElement).checked) {
+        masker.enableDraw = true;
+      } else {
+        masker.enableDraw = false;
+      }
+    }
+  });
+
   document.getElementById("preview")?.addEventListener("click", async () => {
     if (masker) {
       const dataURL = await masker.toDataURL();

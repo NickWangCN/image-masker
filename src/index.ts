@@ -19,6 +19,7 @@ async function initializeImageMasker(
 
   /** 运行参数 **/
   const settings: ImageMaskerTypes.Instance = {
+    enableDraw: true, // 是否启用绘画
     mode: "draw", // 默认涂抹，绘画方式：涂抹(draw)、橡皮擦(erase)
     shape: "free", // 默认自由绘画，绘画方式：自由(free)、矩形(rect)、椭圆(oval)
     brushSize: 5, // 默认画笔大小
@@ -29,6 +30,7 @@ async function initializeImageMasker(
     redoAble: false, // 是否可重做
     undo,
     redo,
+    clear,
     maskLayerToDataURL,
     toDataURL,
   };
@@ -64,8 +66,27 @@ async function initializeImageMasker(
     }
   }
 
-  const canvasDocumentMouseDown = (event: MouseEvent) => {
+  /** 清除全部内容 */
+  function clear() {
     if (!settings.canvas || !settings.ctx) return;
+    settings.ctx.clearRect(0, 0, settings.width, settings.height);
+    settings.imageData = settings.ctx.getImageData(
+      0,
+      0,
+      settings.width,
+      settings.height
+    );
+    // 清空重做栈
+    redoStack.length = 0;
+    // 保存当前画布状态到撤销栈
+    undoStack.push(settings.imageData);
+    // 状态管理
+    settings.redoAble = false;
+    settings.undoAble = true;
+  }
+
+  const canvasDocumentMouseDown = (event: MouseEvent) => {
+    if (!settings.canvas || !settings.ctx || !settings.enableDraw) return;
     if (event.button === 0) {
       isDrawing = true;
       startX = event.clientX - settings.canvas.getBoundingClientRect().left;
@@ -104,7 +125,7 @@ async function initializeImageMasker(
   };
 
   const canvasDocumentMouseUp = (event: MouseEvent) => {
-    if (!settings.canvas || !settings.ctx) return;
+    if (!settings.canvas || !settings.ctx || !settings.enableDraw) return;
     if (event.button === 0) {
       isDrawing = false;
       settings.imageData = settings.ctx.getImageData(

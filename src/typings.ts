@@ -13,6 +13,8 @@ export namespace ImageMaskerTypes {
 
   // 绘制设置
   export interface Instance {
+    // 启用绘画
+    enableDraw: boolean;
     // 绘画模式：涂抹(draw)、橡皮擦(erase)
     mode: "draw" | "erase";
     // 形状：自由(free)、矩形(rect)、椭圆(oval)
@@ -41,6 +43,8 @@ export namespace ImageMaskerTypes {
     undo: () => void;
     // 重做
     redo: () => void;
+    // 清除全部内容
+    clear: () => void;
     // 导出遮罩层
     maskLayerToDataURL: () => Promise<string>;
     // 导出图片

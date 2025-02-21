@@ -11,7 +11,7 @@
         font-family: Arial, sans-serif;
       }
       .container {
-        max-width: 800px;
+        max-width: 960px;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
@@ -51,30 +51,34 @@
       </div>
       <div id="masker-actions-box">
         <label
-          >Size: <input type="number" min="1" max="50" value="5" id="brushSize"
+          >尺寸: <input type="number" min="1" max="50" value="5" id="brushSize"
         /></label>
         <label
-          >Mode:
+          >模式:
           <select id="mode">
             <option value="draw">涂抹</option>
             <option value="erase">清除</option>
           </select>
         </label>
         <label
-          >Shape:
+          >形状:
           <select id="shape">
             <option value="free">自由</option>
             <option value="rect">矩形</option>
             <option value="oval">椭圆</option>
           </select>
         </label>
+        <label
+          ><input id="enableDraw" type="checkbox" checked /> 启用绘画</label
+        >
+        <button id="clear">清空</button>
         <button id="undo">撤销</button>
         <button id="redo">重做</button>
         <button id="preview">预览</button>
         <button id="maskOnly">导出遮罩</button>
       </div>
-      <div id="masker" style="width: 800px; height: 300px"></div>
-      <div id="masker-preview" style="width: 800px; height: 300px"></div>
+      <div id="masker" style="width: 960px; height: 300px"></div>
+      <div id="masker-preview" style="width: 960px; height: 300px"></div>
     </div>
   </body>
 </html>
