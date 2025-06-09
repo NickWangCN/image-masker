@@ -10,9 +10,7 @@ import { ImageMaskerTypes } from "./typings";
  * @param ImageMaskerTypes.InitParams options - 配置参数
  * @return ImageMaskerTypes.Instance - 绘图对象
  */
-async function initializeImageMasker(
-  options: ImageMaskerTypes.InitParams
-): Promise<ImageMaskerTypes.Instance> {
+async function initializeImageMasker(options: ImageMaskerTypes.InitParams): Promise<ImageMaskerTypes.Instance> {
   /** 是否正在绘制，根据鼠标按下/抬起/移动事件判断 */
   let isDrawing = false;
   const eraseColor = "rgba(0,0,0,1)";
@@ -70,12 +68,7 @@ async function initializeImageMasker(
   function clear() {
     if (!settings.canvas || !settings.ctx) return;
     settings.ctx.clearRect(0, 0, settings.width, settings.height);
-    settings.imageData = settings.ctx.getImageData(
-      0,
-      0,
-      settings.width,
-      settings.height
-    );
+    settings.imageData = settings.ctx.getImageData(0, 0, settings.width, settings.height);
     // 清空重做栈
     redoStack.length = 0;
     // 保存当前画布状态到撤销栈
@@ -85,18 +78,27 @@ async function initializeImageMasker(
     settings.undoAble = true;
   }
 
+  let startX: number, startY: number;
+  // 新增：记录上一个点
+  let lastX: number | null = null,
+    lastY: number | null = null;
+
+  /** 修改 mousedown，初始化 lastX/lastY */
   const canvasDocumentMouseDown = (event: MouseEvent) => {
     if (!settings.canvas || !settings.ctx || !settings.enableDraw) return;
     if (event.button === 0) {
       isDrawing = true;
       startX = event.clientX - settings.canvas.getBoundingClientRect().left;
       startY = event.clientY - settings.canvas.getBoundingClientRect().top;
-
+      lastX = startX;
+      lastY = startY;
       // 根据模式选择不同的绘制函数
       switch (settings.shape) {
         case "free":
           settings.ctx.beginPath();
           settings.ctx.moveTo(startX, startY);
+          // 画第一个点
+          drawFreePoint(startX, startY);
           break;
         case "rect":
           drawRect(event);
@@ -107,6 +109,48 @@ async function initializeImageMasker(
       }
     }
   };
+
+  /** 新增：画一个圆点 */
+  function drawFreePoint(x: number, y: number) {
+    if (!settings.ctx) return;
+    settings.ctx.beginPath();
+    settings.ctx.arc(x, y, settings.brushSize / 2, 0, Math.PI * 2);
+    settings.ctx.fillStyle = settings.mode === "erase" ? eraseColor : settings.color;
+    settings.ctx.fill();
+  }
+
+  /** 修改 drawFree，插值补齐 */
+  function drawFree(event: MouseEvent) {
+    if (!settings.canvas || !settings.ctx) return;
+    const currentCompositeOperation = settings.ctx.globalCompositeOperation;
+    if (settings.mode === "erase") {
+      settings.ctx.globalCompositeOperation = "destination-out";
+    }
+    const rect = settings.canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    if (lastX !== null && lastY !== null) {
+      // 计算两点距离
+      const dx = x - lastX;
+      const dy = y - lastY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const step = settings.brushSize / 2; // 步长可调
+      for (let d = 0; d < distance; d += step) {
+        const t = d / distance;
+        const ix = lastX + t * dx;
+        const iy = lastY + t * dy;
+        drawFreePoint(ix, iy);
+      }
+    }
+    drawFreePoint(x, y); // 画当前点
+    lastX = x;
+    lastY = y;
+
+    if (settings.mode === "erase") {
+      settings.ctx.globalCompositeOperation = currentCompositeOperation;
+    }
+  }
 
   const canvasDocumentMouseMove = (event: MouseEvent) => {
     if (isDrawing) {
@@ -124,16 +168,12 @@ async function initializeImageMasker(
     }
   };
 
+  /** 修改 mouseup，重置 lastX/lastY */
   const canvasDocumentMouseUp = (event: MouseEvent) => {
     if (!settings.canvas || !settings.ctx || !settings.enableDraw) return;
     if (event.button === 0) {
       isDrawing = false;
-      settings.imageData = settings.ctx.getImageData(
-        0,
-        0,
-        settings.width,
-        settings.height
-      );
+      settings.imageData = settings.ctx.getImageData(0, 0, settings.width, settings.height);
       // 清空重做栈
       redoStack.length = 0;
       // 保存当前画布状态到撤销栈
@@ -141,6 +181,9 @@ async function initializeImageMasker(
       // 状态管理
       settings.redoAble = false;
       settings.undoAble = true;
+      // 新增：重置
+      lastX = null;
+      lastY = null;
     }
   };
 
@@ -175,13 +218,7 @@ async function initializeImageMasker(
       const tmpImage = new Image();
       tmpImage.onload = () => {
         // 绘制原始图片
-        settings.ctx!.drawImage(
-          settings.originalImage!,
-          0,
-          0,
-          settings.width,
-          settings.height
-        );
+        settings.ctx!.drawImage(settings.originalImage!, 0, 0, settings.width, settings.height);
         // 绘制刚才读取的画布内容
         settings.ctx!.drawImage(tmpImage, 0, 0);
         // 读取当前画布内容
@@ -196,36 +233,11 @@ async function initializeImageMasker(
     return promise;
   }
 
-  let startX: number, startY: number;
-
   /** 恢复画布状态 */
   function restoreImageData(imageData: ImageData) {
     if (imageData) {
       settings.imageData = imageData;
       settings.ctx!.putImageData(imageData, 0, 0);
-    }
-  }
-
-  /** 绘制自由绘画 */
-  function drawFree(event: MouseEvent) {
-    if (!settings.canvas || !settings.ctx) return;
-    // 保存当前的globalCompositeOperation
-    const currentCompositeOperation = settings.ctx.globalCompositeOperation;
-    if (settings.mode === "erase") {
-      // 设置为擦除模式
-      settings.ctx.globalCompositeOperation = "destination-out";
-    }
-    const rect = settings.canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    settings.ctx.lineTo(x, y);
-    settings.ctx.strokeStyle =
-      settings.mode === "erase" ? eraseColor : settings.color;
-    settings.ctx.lineWidth = settings.brushSize;
-    settings.ctx.stroke();
-    if (settings.mode === "erase") {
-      // 恢复原来的globalCompositeOperation
-      settings.ctx.globalCompositeOperation = currentCompositeOperation;
     }
   }
 
@@ -243,8 +255,7 @@ async function initializeImageMasker(
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    settings.ctx.fillStyle =
-      settings.mode === "erase" ? eraseColor : settings.color;
+    settings.ctx.fillStyle = settings.mode === "erase" ? eraseColor : settings.color;
     const width = x - startX;
     const height = y - startY;
     settings.ctx.fillRect(startX, startY, width, height);
@@ -268,8 +279,7 @@ async function initializeImageMasker(
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    settings.ctx.fillStyle =
-      settings.mode === "erase" ? eraseColor : settings.color;
+    settings.ctx.fillStyle = settings.mode === "erase" ? eraseColor : settings.color;
     settings.ctx.beginPath();
     settings.ctx.ellipse(
       (startX + x) / 2,
@@ -306,12 +316,7 @@ async function initializeImageMasker(
     container.addEventListener("mouseup", canvasDocumentMouseUp);
   }
   /** 创建一个canvas并绘制图片，可以指定最大高度或宽度*/
-  function getCanvasImage(
-    container: HTMLDivElement,
-    img: HTMLImageElement,
-    maxWidth: number,
-    maxHeight: number
-  ) {
+  function getCanvasImage(container: HTMLDivElement, img: HTMLImageElement, maxWidth: number, maxHeight: number) {
     // 计算缩放比例
     const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
     const newWidth = img.width * scale;
@@ -389,12 +394,7 @@ async function initializeImageMasker(
       settings.height = result.height; // 将高度赋值给外部变量
       settings.originalImage = result.originalImage; // 将原始图片赋值给外部变量
       // 保存初始状态
-      settings.imageData = settings.ctx.getImageData(
-        0,
-        0,
-        settings.width,
-        settings.height
-      );
+      settings.imageData = settings.ctx.getImageData(0, 0, settings.width, settings.height);
       undoStack.push(settings.imageData);
       resolve(settings);
     };
